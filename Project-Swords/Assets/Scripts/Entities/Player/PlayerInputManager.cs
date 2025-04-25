@@ -1,17 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Player))]
+[RequireComponent(
+    typeof(Player), 
+    typeof(PlayerJump), 
+    typeof(PlayerBasicMovements)
+)]
 
 public class PlayerInputManager : MonoBehaviour
 {
     private PlayerBasicMovements playerMove;
+    private PlayerJump playerJump;
     private bool hasAllScripts = false;
     private float inputOffSet = 0.3f;
 
     private void Start()
     {
-        if (TryGetComponent(out PlayerBasicMovements script)) playerMove = script;
+        if (TryGetComponent(out PlayerBasicMovements moveScript)) playerMove = moveScript;
+        if (TryGetComponent(out PlayerJump jumpScript)) playerJump = jumpScript;
 
         hasAllScripts = true;
     }
@@ -32,6 +38,17 @@ public class PlayerInputManager : MonoBehaviour
             playerMove.Move(Vector2.zero);
         }
     }
+
+     public void OnJump(InputAction.CallbackContext context)
+    {
+        if (!hasAllScripts) return;
+
+        if (context.started)
+        {
+            playerJump.Jumping();
+        }
+    }
+
 
     private Vector2 ApplyOffSet(Vector2 input)
     {
@@ -61,8 +78,9 @@ public class PlayerInputManager : MonoBehaviour
             input.y = -1;
         }
         
-        Debug.Log($"input : {input}");
+        //Debug.Log($"input : {input}");
 
         return input;
     }
+
 }

@@ -14,6 +14,7 @@ public class Jump : MonoBehaviour
     {
         stats = GetComponent<Stats>();
         groundCheck = GetComponent<GroundCheck>();
+        rb = GetComponent<Rigidbody2D>();
         jumpPower = stats.GetJumpPower();
     }
 
