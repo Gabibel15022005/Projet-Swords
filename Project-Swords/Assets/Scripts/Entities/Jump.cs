@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
-    private Stats stats;
-    private GroundCheck groundCheck;
-    private Rigidbody2D rb;
-    private float jumpPower;
-    private int maxJumpNumber = 1, jumpNumber = 0;
+    protected Stats stats;
+    protected GroundCheck groundCheck;
+    protected Rigidbody2D rb;
+    protected float jumpPower;
+    protected int maxJumpNumber = 1, jumpNumber = 0;
+    protected bool canJump = true;
     
     void Start()
     {
@@ -20,6 +21,8 @@ public class Jump : MonoBehaviour
 
     public void Jumping()
     {
+        if (!canJump) return; 
+
         if(groundCheck.isGrounded)
         {
             jumpNumber = maxJumpNumber;

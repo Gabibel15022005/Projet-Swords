@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,6 +12,24 @@ public class PlayerBasicMovements : MonoBehaviour
     private Vector2 direction;
     private bool canMove = true, isMoving = false;
     [SerializeField]private float acceleration = 1f, deceleration = 1f;
+
+
+    public static Action<bool> onSetCanMove{ get; set; }
+    private void OnEnable()
+    {
+        onSetCanMove += SetCanMove;
+    }
+
+    private void OnDisable()
+    {
+        onSetCanMove -= SetCanMove;
+    }
+
+    private void SetCanMove(bool value)
+    {
+        canMove = value;
+    }
+
  
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
