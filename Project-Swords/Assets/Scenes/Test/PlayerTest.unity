@@ -246,13 +246,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 333659647}
-  - component: {fileID: 333659648}
-  - component: {fileID: 333659649}
   - component: {fileID: 333659652}
-  - component: {fileID: 333659651}
   - component: {fileID: 333659650}
+  - component: {fileID: 333659648}
   - component: {fileID: 333659653}
+  - component: {fileID: 333659649}
+  - component: {fileID: 333659651}
   - component: {fileID: 333659654}
+  - component: {fileID: 333659655}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -290,7 +291,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -318,7 +319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpPower: 5
+  jumpPower: 12
   health: 3
   healthMax: 3
 --- !u!114 &333659650
@@ -333,6 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 578ac747d2d127144bece5fce92f6898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputOffSet: 0.5
 --- !u!114 &333659651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,7 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 2.5
-  deceleration: 5
+  deceleration: 10
 --- !u!114 &333659652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,7 +431,19 @@ MonoBehaviour:
     m_ActionId: b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba
     m_ActionName: 'Player/Next[/Keyboard/2]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 333659650}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
@@ -491,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorCheck: {r: 0.4415095, g: 0.17655714, b: 0.042484865, a: 1}
   posCheck: {fileID: 78646791}
-  sizeCheck: {x: 0.8, y: 0.3}
+  sizeCheck: {x: 0.8, y: 0.4}
   radiusCheck: 0
   groundLayer:
     serializedVersion: 2
@@ -509,6 +523,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15e0eb0a86305a44970e3e5a1d3aa11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &333659655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333659646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 548adb12ef80a5843a700c1cee5d53d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSpeed: 30
+  dashDuration: 0.1
+  dashCd: 0.4
 --- !u!1 &397677148
 GameObject:
   m_ObjectHideFlags: 0

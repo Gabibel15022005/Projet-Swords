@@ -9,11 +9,12 @@ public class PlayerBasicMovements : MonoBehaviour
     private Rigidbody2D rb;
     private float speed = 0f;
     private Vector2 direction;
-    private bool canMove = true, isMoving = false;
+    private bool canMove = true, isMoving = false, isDashing = false;
     [SerializeField] private float acceleration = 1f, deceleration = 1f;
 
     public static Action<Vector2> onMove { get; set; }
     public static Action<bool> onSetCanMove { get; set; }
+    public static Action onSetToMaxSpeed { get; set; }
 
     void Start()
     {
@@ -23,14 +24,22 @@ public class PlayerBasicMovements : MonoBehaviour
 
     private void OnEnable()
     {
+        PlayerDash.onSetIsDashing += SetIsDashing;
         onSetCanMove += SetCanMove;
         onMove += Move;
+        onSetToMaxSpeed += SetToMaxSpeed;
     }
 
     private void OnDisable()
     {
+        PlayerDash.onSetIsDashing -= SetIsDashing;
         onSetCanMove -= SetCanMove;
         onMove -= Move;
+        onSetToMaxSpeed -= SetToMaxSpeed;
+    }
+    private void SetIsDashing(bool value)
+    {
+        isDashing = value;
     }
 
     private void SetCanMove(bool value)
@@ -66,6 +75,7 @@ public class PlayerBasicMovements : MonoBehaviour
     void Update()
     {
         if (!canMove) return;
+        if (isDashing) return;
 
         if (isMoving)
         {
@@ -77,25 +87,25 @@ public class PlayerBasicMovements : MonoBehaviour
         }
         else
         {
-            setSpeedToZero();
+            SetSpeedToZero();
         }
 
         rb.linearVelocityX = direction.x * speed;
     }
 
-    private void setToMaxSpeed()        //use at the end of the dash
+    private void SetToMaxSpeed()        //use at the end of the dash
     {                                   //ork type code
         speed = player.speed;
     }
 
-    private void setSpeedToZero()
+    private void SetSpeedToZero()
     {
         speed = 0f;
     }
 
     public void Move(Vector2 input)
     {
-        if (input != Vector2.zero)
+        if (input.x != 0)
         {
             direction = input;
             isMoving = true;

@@ -10,7 +10,9 @@ using UnityEngine.InputSystem;
 public class PlayerInputManager : MonoBehaviour
 {
     private bool hasAllScripts = false;
-    private float inputOffSet = 0.3f;
+    private bool isMoving = false;
+    [SerializeField] private float inputOffSet = 0.3f;
+    private Vector2 oldInput = Vector2.zero;
 
     private void Start()
     {
@@ -20,15 +22,13 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (!hasAllScripts) return;
 
-        Vector2 input = context.ReadValue<Vector2>();
+        Vector2 input = ApplyOffSet(context.ReadValue<Vector2>());
 
-        input = ApplyOffSet(input);
-
-        if (context.started)
+        if (isMoving)
         {
             PlayerBasicMovements.onMove?.Invoke(input);
         }
-        else if (context.canceled)
+        else
         {
             PlayerBasicMovements.onMove?.Invoke(Vector2.zero);
         }
@@ -42,11 +42,30 @@ public class PlayerInputManager : MonoBehaviour
         {
             PlayerJump.onJump?.Invoke();
         }
+        else if (context.canceled)
+        {
+            PlayerJump.onReleaseJump?.Invoke();
+        }
     }
 
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (!hasAllScripts) return;
+
+        if (context.started)
+        {
+            PlayerDash.onDash?.Invoke();
+        }
+    }
 
     private Vector2 ApplyOffSet(Vector2 input)
     {
+        //Debug.Log($"context : {input}");
+
+        input = input.normalized;
+
+        //Debug.Log($"context.normalized : {input}");
+
         if(input.x < inputOffSet && input.x > -inputOffSet)
         {
             input.x = 0;
@@ -72,6 +91,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             input.y = -1;
         }
+
+        if (input != Vector2.zero) isMoving = true;
+        else isMoving = false;
         
         //Debug.Log($"input : {input}");
 

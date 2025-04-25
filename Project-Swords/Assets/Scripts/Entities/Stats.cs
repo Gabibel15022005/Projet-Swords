@@ -6,7 +6,7 @@ public class Stats : MonoBehaviour
     public float speed = 1f;
     public float jumpPower = 2f;
 
-    [Space(20)]
+    [Space(10)]
     [Header("Stats")]
     public int health = 3;
     public int healthMax = 3;

@@ -9,6 +9,7 @@ public class Jump : MonoBehaviour
     protected Rigidbody2D rb;
     protected int maxJumpNumber = 1, jumpNumber = 0;
     protected bool canJump = true;
+    protected bool isDashing = false;
     
     void Start()
     {
@@ -20,6 +21,7 @@ public class Jump : MonoBehaviour
     public void Jumping()
     {
         if (!canJump) return; 
+        if (isDashing) return;
 
         if(groundCheck.isGrounded)
         {
