@@ -9,16 +9,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    private PlayerBasicMovements playerMove;
-    private PlayerJump playerJump;
     private bool hasAllScripts = false;
     private float inputOffSet = 0.3f;
 
     private void Start()
     {
-        if (TryGetComponent(out PlayerBasicMovements moveScript)) playerMove = moveScript;
-        if (TryGetComponent(out PlayerJump jumpScript)) playerJump = jumpScript;
-
         hasAllScripts = true;
     }
     public void OnMove(InputAction.CallbackContext context)
@@ -31,21 +26,21 @@ public class PlayerInputManager : MonoBehaviour
 
         if (context.started)
         {
-            playerMove.Move(input);
+            PlayerBasicMovements.onMove?.Invoke(input);
         }
         else if (context.canceled)
         {
-            playerMove.Move(Vector2.zero);
+            PlayerBasicMovements.onMove?.Invoke(Vector2.zero);
         }
     }
 
-     public void OnJump(InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context)
     {
         if (!hasAllScripts) return;
 
         if (context.started)
         {
-            playerJump.Jumping();
+            PlayerJump.onJump?.Invoke();
         }
     }
 

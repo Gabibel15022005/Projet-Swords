@@ -3,13 +3,13 @@ using UnityEngine;
 public class Stats : MonoBehaviour
 {
     [Header("Physics")]
-    [SerializeField] protected float speed = 1f;
-    [SerializeField] protected float jumpPower = 2f;
+    public float speed = 1f;
+    public float jumpPower = 2f;
 
     [Space(20)]
     [Header("Stats")]
-    [SerializeField] protected int health = 3;
-    [SerializeField] protected int healthMax = 3;
+    public int health = 3;
+    public int healthMax = 3;
 
     protected void ChangeHealth(int amount)
     {
@@ -24,8 +24,4 @@ public class Stats : MonoBehaviour
             health = 0;
         } 
     }
-
-    public int GetHealthMax() { return healthMax; }
-    public float GetSpeed() { return speed; }
-    public float GetJumpPower() { return jumpPower; }
 }

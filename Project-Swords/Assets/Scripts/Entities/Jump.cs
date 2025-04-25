@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
-    protected Stats stats;
+    protected Player player;
     protected GroundCheck groundCheck;
     protected Rigidbody2D rb;
-    protected float jumpPower;
     protected int maxJumpNumber = 1, jumpNumber = 0;
     protected bool canJump = true;
     
     void Start()
     {
-        stats = GetComponent<Stats>();
+        player = GetComponent<Player>();
         groundCheck = GetComponent<GroundCheck>();
         rb = GetComponent<Rigidbody2D>();
-        jumpPower = stats.GetJumpPower();
     }
 
     public void Jumping()
@@ -31,7 +29,7 @@ public class Jump : MonoBehaviour
         if(jumpNumber > 0)
         {
             rb.linearVelocityY = 0;
-            rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * player.jumpPower, ForceMode2D.Impulse);
             jumpNumber--;
         }
     }

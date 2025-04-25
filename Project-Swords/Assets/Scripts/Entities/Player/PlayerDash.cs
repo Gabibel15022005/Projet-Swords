@@ -1,10 +1,9 @@
+using System;
 using UnityEngine;
 
 public class PlayerDash : MonoBehaviour
 {
-
     private GroundCheck groundCheck;
-    
     private Rigidbody2D rb;
 
    private float dashSpeed = 15f;
@@ -17,10 +16,8 @@ public class PlayerDash : MonoBehaviour
 
    private bool canDash = true;
    private bool isDashing = false;
-   private bool isGrounded;
 
-
-//
+    public static Action onDash { get; set; }
 
     private void Start()
     {
@@ -28,9 +25,17 @@ public class PlayerDash : MonoBehaviour
         PlayerJump.onSetCanJump?.Invoke(true);
     }
 
+    private void OnEnable()
+    {
+        PlayerBasicMovements.onMove += DashDirection;
+    }
 
+    private void OnDisable()
+    {
+        PlayerBasicMovements.onMove -= DashDirection;
+    }
 
-     public void DashDirection(Vector2 input)
+    public void DashDirection(Vector2 input)
     {
         if (input != Vector2.zero)
         {

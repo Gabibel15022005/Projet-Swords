@@ -7,22 +7,30 @@ public class PlayerBasicMovements : MonoBehaviour
 {
     private Player player;
     private Rigidbody2D rb;
-    private float maxSpeed;
     private float speed = 0f;
     private Vector2 direction;
     private bool canMove = true, isMoving = false;
-    [SerializeField]private float acceleration = 1f, deceleration = 1f;
+    [SerializeField] private float acceleration = 1f, deceleration = 1f;
 
+    public static Action<Vector2> onMove { get; set; }
+    public static Action<bool> onSetCanMove { get; set; }
 
-    public static Action<bool> onSetCanMove{ get; set; }
+    void Start()
+    {
+        player = GetComponent<Player>();
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     private void OnEnable()
     {
         onSetCanMove += SetCanMove;
+        onMove += Move;
     }
 
     private void OnDisable()
     {
         onSetCanMove -= SetCanMove;
+        onMove -= Move;
     }
 
     private void SetCanMove(bool value)
@@ -30,15 +38,7 @@ public class PlayerBasicMovements : MonoBehaviour
         canMove = value;
     }
 
- 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        player = GetComponent<Player>();
-        rb = GetComponent<Rigidbody2D>();
-        maxSpeed = player.GetSpeed();
-    }
-
+#region "Commentaire"
     // Update is called once per frame
 
     //if can move
@@ -62,14 +62,14 @@ public class PlayerBasicMovements : MonoBehaviour
 
         rb.linearVelocityX = direction.x * speed; 
     }*/
-
+#endregion
     void Update()
     {
         if (!canMove) return;
 
         if (isMoving)
         {
-            speed = Mathf.Lerp(speed, maxSpeed, acceleration * Time.deltaTime);
+            speed = Mathf.Lerp(speed, player.speed, acceleration * Time.deltaTime);
         }
         else if (speed > 0.2f)
         {
@@ -85,7 +85,7 @@ public class PlayerBasicMovements : MonoBehaviour
 
     private void setToMaxSpeed()        //use at the end of the dash
     {                                   //ork type code
-        speed = maxSpeed;
+        speed = player.speed;
     }
 
     private void setSpeedToZero()
